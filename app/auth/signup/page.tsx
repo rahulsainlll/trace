@@ -27,6 +27,10 @@ import {
 import { toast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { ToastAction } from "@radix-ui/react-toast";
+import githubLogo from "/public/githubLogo.png";
+import googleLogo from "/public/google.png";
+import Image from "next/image";
+import { signIn } from "next-auth/react";
 
 const signUpSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -46,6 +50,17 @@ export default function SignUpPage() {
   });
 
   const router = useRouter();
+
+
+  const handleGithubSignUp =  () => {
+     signIn("github");
+    // router.push("/");
+  };
+
+  const handleGoogleSignUp = async () => {
+    await signIn("google");
+    // router.push("/");
+  };
 
   const onSubmit = async (data: SignUpFormData) => {
     setLoading(true);
@@ -127,13 +142,32 @@ export default function SignUpPage() {
             </form>
           </Form>
         </div>
-        <div className="flex justify-end border-gray-300">
-          <Link
-            href="/auth/signin"
-            className="text-sm text-[#425893] hover:text-gray-600 underline"
+        <div className="flex mb-5">
+          <button
+            onClick={handleGithubSignUp}
+            className="w-full flex items-center font-semibold justify-center h-8 px-6 mt-4 mr-1 text-sm transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
           >
-            login
-          </Link>
+            <Image src={githubLogo} alt="Github Logo" width={20} height={20} />
+            <span className="ml-4">Github</span>
+          </button>
+          <button
+            onClick={handleGoogleSignUp}
+            className="w-full flex items-center font-semibold justify-center h-8 px-6 mt-4 ml-1 text-sm  transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
+          >
+            <Image src={googleLogo} alt="Google Logo" width={20} height={20} />
+            <span className="ml-4">Google</span>
+          </button>
+        </div>
+        <div className="flex justify-end border-gray-300">
+          <p className="text-sm text-muted-foreground">
+            Already have an account?{" "}
+            <Link
+              href="/auth/signin"
+              className="text-sm text-[#425893] hover:text-gray-600 underline"
+            >
+              Log in
+            </Link>
+          </p>
 
           {/* <div className="flex justify-end border-gray-300 ">
             <Popover>
